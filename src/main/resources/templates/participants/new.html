@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Participants CRUD</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h3>
+				<b>Lunch Talk Participants</b>
+			</h3>
+			<h5>This is a simple application (CRUD) to control Participants.</h5>
+		</div>
+	</div>
+
+	<div class="container">
+		<br/>
+		<h4><b>New Participant</b></h4>
+		<br/>
+
+		<form th:action="@{/participants/insert}"
+			th:method="${participant.id} == 0 ? post : put" th:object="${participant}">
+			<div class="row">
+				<input id="id" type="hidden" th:field="*{id}" />
+				<div class="form-group col-md-4">
+					<label for="name">Name:</label> <input class="form-control"
+						id="name" type="text" th:field="*{name}" />
+					<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" type="submit">Save</button>
+			</div>
+
+		</form>
+
+		<hr />
+
+		<a class="btn btn-light" th:href="@{/participants/list}">Go back</a>
+
+		<hr />
+		<footer class="footer">
+			<p>&copy; 2018 SAP Hybris - Software Academy</p>
+		</footer>
+
+	</div>
+</body>
+</html>

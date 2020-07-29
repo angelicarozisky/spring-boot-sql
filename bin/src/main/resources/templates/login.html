@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+<title>Participants CRUD - Login</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<link href="/css/login.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+	<div class="sidenav">
+		<div class="login-main-text">
+			<h3>Welcome to</h3>
+			<h2>
+				<b>Lunch Talk's Participants Demo</b>
+			</h2>
+			<p>Login here to access.</p>
+		</div>
+	</div>
+	<div class="main">
+		<div class="col-md-6 col-sm-12">
+			<div class="login-form">
+				<form th:action="@{/login}" method="post">
+
+					<div th:if="${param.error}">
+						<div class="alert alert-danger">Invalid username or
+							password!</div>
+					</div>
+
+					<div class="form-group">
+						<label>User Name</label> <input class="form-control"
+							placeholder="username" required="please enter the username"
+							name="username" autofocus="" type="text">
+					</div>
+					<div class="form-group">
+						<label>Password</label> <input class="form-control"
+							placeholder="password" required="please enter the password"
+							name="password" type="password" value="">
+					</div>
+					<div class="form-group">
+						<input type="checkbox" id="remember-me" name="remember-me" /> <label
+							for="remember-me">Remember Me?</label>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Login</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

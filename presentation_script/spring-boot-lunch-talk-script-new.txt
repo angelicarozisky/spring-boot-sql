@@ -1,0 +1,639 @@
+:: START DEMO SCRIPT - LUNCH TALK SPRING BOOT ::
+
+
+1. CREATE A SIMPLE JAVA APPLICATION USING SPRING INITIALIZR
+
+    https://start.spring.io/
+
+
+1.2. Generate Project - lunchtalk.zip
+
+    Spring Boot version: 1.5.16
+    Group: hybris		
+    Artifact: lunchtalk	
+    Name: Simple Spring Boot DEMO
+    Description: Demo project using Spring BOOT
+    Package Name: hybris.lunchtalk
+    Packaging: Jar
+    Java Version: 8
+    Dependencies: Web, JPA, H2, Actuator, Security, Thymeleaf and Rest Repositories
+
+
+1.3. Open the Eclipse, import the lunchtalk.zip and create an application to manage Lunch Talk's Participants
+
+      select only the option with "Import as Maven"
+
+
+1.4. Copy all files of lunchtalk-spring-boot-template-full
+
+
+1.5. Open the POM.XML, show and comment the initial dependencies
+
+
+
+2. CREATE AND EXPOSE A SIMPLE MICROSERVICE ParticipantRestController
+
+
+2.1. Show and comment Participant.class (MODEL)
+
+
+2.2. Show and comment IParticipantRepository
+
+// Observations:
+
+// 1. The interface JpaRepository (Logical Repository) provide database persistence methods such as findAll, findAllById, etc
+// 2. Inserted the Participant class and its id type (Long)
+// 3. Show JpaRepository methods (open declaration)
+// 4. Show PagingAndSortingRepository (open declaration)
+// 5. Show CrudRepository (open declaration)
+// 6. Declare findByName method with @RestResource and @Param annotations
+
+
+2.3. Open the SimpleSpringBootDemoApplication class and show the @Bean "runner
+
+    // Observations:
+
+    // 1. The @Bean runner will be loaded with the application. The data will be populated
+    // 2. For each element the array will be created a participant object
+
+
+2.4. Show and comment ParticipantRestController
+
+
+2.5. Run the application and test:
+
+
+      All participants:
+      http://localhost:8080/participants
+
+      By id:
+      http://localhost:8080/participants/1
+
+      By name:
+      http://localhost:8080/participants/search/by-name?name=Ken
+
+
+      Using @RequestMapping "participants-initial":
+      http://localhost:8080/participants-initial
+
+
+
+3. CREATE A CRUD APPLICATION
+
+
+3.1. Show and comment about the Pagination class
+
+
+3.2. Show and comment about the ParticipantMvcController class
+
+
+3.3. Open the POM.XML and comment about used dependencies by CRUD:
+
+
+3.4. Show and comment about the stylesheet "participants.css"
+
+
+3.5. Show and comment the web page "list.html"
+
+
+3.6. Show and comment the web page "new.html"
+
+
+3.7. Show and comment the web page "edit.html"
+
+
+3.8. Show and comment about "thymeleaf configurations" into application.properties
+
+
+3.9. Show the application with CRUD operations:
+
+      http://localhost:8080/participants/list
+
+
+3.10. Show the SQL transactions in console
+
+
+
+
+
+4. SECURITY AND METRICS
+
+
+4.1. Open the POM.XML and comment about the dependencies metrics and security:
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+      </dependency>
+
+
+4.2. Comment about the following lines into application.properties
+
+server.port=8000
+
+management.port=9000
+management.context-path=/admin
+management.security.enabled=true
+
+security.user.name=admin
+security.user.password=admin
+security.basic.enabled=true
+
+
+4.3. Open the SimpleSpringBootDemoApplication class and comment about the @Bean "hybrisIndicator" (our custom indicator)
+
+    @Bean
+    HealthIndicator hybrisIndicator () {
+      return ()-> Health.status("Lunch Talk OK!").build();
+    }
+
+
+4.4. Show the security and the metrics
+
+	http://localhost:9000/admin/metrics
+	http://localhost:9000/admin/beans
+	http://localhost:9000/admin/mappings
+	http://localhost:9000/admin/health
+
+
+4.5. Stop the application:
+
+
+
+5. USE DIFFERENT EMBEDDED WEB SERVERS
+
+	// Observations:
+	// 1. Tomcat by default (is not necessary add the dependency)
+	// 2. Uncomment dependency spring-boot-starter-jetty and run the application
+	// 3. Uncomment dependency spring-boot-starter-undertow and run the application - undertow is sponsored by JBoss
+
+
+5.1. With the POM.XML uncomment the Jetty dependency or undertow dependency:
+
+	<dependency>
+	  <groupId>org.springframework.boot</groupId>
+	  <artifactId>spring-boot-starter-jetty</artifactId>
+	</dependency>
+
+
+5.2. Run the application and show the Jetty started in console
+
+
+5.3. Stop the application
+
+
+
+
+6. USE MYSQL DATABASE
+
+
+6.1. With the POM.XML opened comment H2 dependency:
+
+	<dependency>
+	   <groupId>com.h2database</groupId>
+	   <artifactId>h2</artifactId>
+	   <scope>runtime</scope>
+	</dependency>
+
+
+6.2. With the POM.XML opened uncomment MySQL dependency:
+
+	<dependency>
+	   <groupId>mysql</groupId>
+	   <artifactId>mysql-connector-java</artifactId>
+	</dependency>
+
+
+6.3. Uncomment the following lines Into application.yml
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lunchtalk?useSSL=false&createDatabaseIfNotExist=true
+    username: root
+    password: Mysql@2018
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        hbm2ddl:
+          auto: update
+          management:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+
+6.4. Run the application and show the MySQL started in console
+
+
+6.5. Open MySQLWorkbench and show the Participant database
+
+
+6.6. Stop the application
+
+
+
+7. SHOW HOW USE MONGODB DATABASE - Local version
+
+
+7.1. Open the POM.XML and uncomment the MongoDB dependency:
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+
+7.2. Open the application.yml and comment the following lines:
+
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/lunchtalk?useSSL=false&createDatabaseIfNotExist=true
+#    username: root
+#    password: Mysql@2018
+#    driver-class-name: com.mysql.jdbc.Driver
+#  jpa:
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        hbm2ddl:
+#          auto: update
+#          management:
+
+
+7.3. Open the application.properties and uncomment the following lines:
+
+# MongoDB local connection string
+spring.data.mongodb.database=lunchtalk
+
+# MongoDB logging
+logging.level.org.springframework.data.mongodb.core.MongoTemplate=TRACE
+
+
+7.4. Open and comment about SequenceId - uncomment MongoDB version and comment SQL version
+
+
+7.5. Open and comment about Participant - uncomment MongoDB version and comment SQL version
+
+
+7.6. Open and comment about ISequenceDao
+
+
+7.7. Open and comment about IParticipantRepository - uncomment MongoDB version and comment SQL version
+
+
+7.8. Open and comment about SequenceRestController - uncomment MongoDB version and comment SQL version
+
+
+7.9. Open and comment about ParticipantMvcController - uncomment MongoDB version and comment SQL version
+
+
+7.10. Open and comment about LunchtalkSpringBootTemplateApplication - uncomment MongoDB version and comment SQL version
+
+
+7.11. Run the application and show the MongoDB started in console
+
+
+7.12. Show CRUD operations using MongoDB Shell
+
+// Show CRUD operations using MongoDB
+//
+// MongoDB shell version v3.6.6
+// Path (Mac): /usr/local/Cellar/mongodb/4.0.1/bin
+// Execute shell : 						 mongo
+// Show databases : 						 show dbs
+// Use test database (participants) : 				 use test
+// Show collections (tables) : 					 show collections
+// SELECT * FROM participant : 					 db.participant.find()
+// SELECT * FROM participant WHERE name = "Ken" :  	         db.participant.find( {name:"Ken"} )
+
+// $regex is a evaluation query operator. #regex provides regular expression capabilities for pattern matching strings in queries.
+//
+// SELECT * FROM participant WHERE name LIKE "%K%" :		 db.participant.find({"name": {"$regex": "K"}})
+
+// UPDATE participant SET name = "Ken Lomax" WHERE name= "Ken" : db.participant.updateMany( {name:"Ken"}, {$set:{name:"Ken Lomax"}} )
+// DELETE FROM participant WHERE name = "Ken" :	 		 db.participant.deleteMany({name:"Ken Lomax"})
+
+// INSERT INTO participant (name) VALUES ("Ken") :               db.participant.insertOne( {name: "Ken"} )
+// DROP TABLE participant					 db.participant.drop()
+// CREATE TABLE participant                                      db.createCollection("participant")
+
+// CREATE DATABASE hybris AND COLLECTION customer
+// use hybrid
+// db.createCollection("customer")
+
+// MongoDB
+// The databases are stored in the /usr/local/var/mongodb/ directory
+// The mongod.conf file is here: /usr/local/etc/mongod.conf
+// The mongo logs can be found at /usr/local/var/log/mongodb/
+// The mongo binaries are here: /usr/local/Cellar/mongodb/[version]/bin
+
+
+// Create the collection "sequence" to generate the ID
+// use lunchtalk
+// db.sequence.insert({_id: "participant",seq: 0})
+
+
+7.13. Stop the application
+
+
+8. SHOW HOW USE MONGODB DATABASE - Cloud Platform (MongoDB Atlas)
+
+
+8.1. Open application.properties and uncomment the following line:
+
+spring.data.mongodb.uri=mongodb://lunchtalk:lunchtalk@cluster0-shard-00-00-wnc8d.mongodb.net:27017,cluster0-shard-00-01-wnc8d.mongodb.net:27017,cluster0-shard-00-02-wnc8d.mongodb.net:27017/lunchtalk?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+
+
+8.2. Run the application
+
+
+8.3. Show MongoDB Atlas
+
+https://cloud.mongodb.com/user#/atlas/login
+
+Cluster
+	- Overview
+	- Security
+	- Metrics
+	- Connect (Check the IP Whitelist and Connection method)
+	- Collections (Show the data and run a simple find)
+
+
+8.4. Show how connect using Mongo Shell
+
+	- Show command find
+
+
+8.5. Show MongoDB Compass Communnity
+
+	- Copy the URI Connection String and open MongoDB Compass
+
+
+
+[ *** STEP 9 - ONLY SHOW IF TIME ENOUGH ** ]
+
+9. SHOW HOW CONTAINERIZE THE APPLICATION USING DOCKER
+
+9.1. Create a Dockerfile
+
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG DEPENDENCY=target/dependency
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","hybris.lunchtalk.LunchtalkSpringBootTemplateApplication"]
+
+9.2. Run the commands
+
+// Build the Docker image
+docker build -t marcelovgomes/participants:v1 . 
+
+// Check the images
+docker images -a
+
+// Run the Docker container
+docker run -p 8080:8000 marcelovgomes/participants:v1
+
+// Push to Docker Hub
+
+// Log in to Docker
+docker login
+
+// Push the image to Docker Hub
+docker push marcelovgomes/participants:v1
+
+// Run the Docker container
+docker run -p 8080:8000 marcelovgomes/participants:v1
+
+
+
+[ *** STEP 10 - ONLY SHOW IF TIME ENOUGH ** ]
+
+10. SHOW HOW USE KUBERNETES
+
+10.1. Create a deployment.yml
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: participantsservice
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8082
+      # Port to forward to inside the pod
+      targetPort: 8000
+      # Port accessible outside cluster
+      nodePort: 30003
+  type: LoadBalancer
+ 
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: participantsdeploy
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: marcelovgomes/participants:v1
+          ports:
+            - containerPort: 8000
+
+
+10.2. Run in local Kubernetes
+
+// Start minikube
+minikube start 
+
+// Point the kubectl to local minikube
+kubectl config use-context minikube
+
+// Try querying the minikube using kubectl
+kubectl get pods
+
+kubectl get deployments
+
+
+// Explore the Kubernetes dashboard
+kubectl get deployments
+
+
+// Deploy the Kubernetes application to minikube
+kubectl create -f deployment.yml 
+
+
+// The Kubernetes dashboard now shows new elements: 5 new pods, 1 new service and 1 new deployment
+minikube dashboard
+
+// Query the kubernetes status using kubectl 
+
+kubectl get pods
+
+kubectl get deployments
+
+kubectl get services
+
+
+// Access the Kubernetes application
+minikube service participantsservice
+
+// Kill a pod, scale up and down
+
+
+
+[ *** STEP 11 - ONLY SHOW IF TIME ENOUGH ** ]
+
+11. SHOW HOW USE GOOGLE CLOUD
+
+
+11.1. Create a project named participants
+
+11.2. Enable Kubernetes Engine API and Compute Engine API for participants project
+
+11.3. Execute the commands
+
+// Google Cloud console 
+https://console.cloud.google.com
+
+// Create a container cluster using google cloud shell
+gcloud container clusters create participants --num-nodes=3 --zone=europe-west1-b
+
+// Copy the following files to google cloud`s root directory
+
+deployment.yml
+Dockerfile
+
+// Deploy the application to Kubernetes cluster
+kubectl apply -f deployment.yml
+
+// Find the external IP address where the application can be reached
+kubectl get service
+
+Go to (example): http://35.241.180.128:8082/participants/list
+
+
+
+
+[ *** STEP 12 - ONLY SHOW IF TIME ENOUGH ** ]
+
+
+12. Show how create a simple Spring Script (Groovy) and how run start.spring.io using curl command
+
+
+12.1 Create and run a simple Spring Script (Groovy):
+
+12.1.1 Open the terminal
+12.1.2. Create the script “hello.groovy” Into the folder “Downloads” (using atom)
+
+$ atom hello.groovy
+
+      @RestController
+      class HelloController {
+
+              @RequestMapping("/")
+              def String hello() {
+                      "Groovy says: Hello World !"
+              }
+
+              @RequestMapping("/{user}")
+              def String helloUser(@PathVariable String user) {
+                      "Groovy says: Hello " + user + " !"
+              }
+      }
+
+12.1.3. Execute Spring Boot CLI
+
+      $ spring run hello.groovy
+
+12.1.4. Show the results in Chrome
+
+      http://localhost:8080/
+      http://localhost:8080/SAP
+
+
+12.2. Create a simple Java application using command line with curl:
+
+      $ curl start.spring.io
+      $ curl https://start.spring.io/starter.zip -d applicationName=Application -d groupId=hybris.lunchtalk -d artifactId=springboot.demo -d name=springboot.demo -d description="Demo project using Spring BOOT" -d packageName=hybris.lunchtalk.springboot.demo -d baseDir=springboot.demo -d dependencies=web,data-jpa,hsql,actuator,security,thymeleaf,data-rest -o springboot.demo.zip
+
+
+12.2.1. Open the Eclipse, import the springboot.demo.zip and create a simple Hello World (Console Application)
+
+      select only the option with "Import as Maven"
+
+
+12.2.2. Open POM.XML and comment all dependencies, with exception:
+
+      <dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-test</artifactId>
+  			<scope>test</scope>
+  		</dependency>
+
+12.2.3. With POM.XML opened, add the dependency:
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+      </dependency>
+
+12.2.4. Show a message in console:
+
+      System.out.println("Hello World!")
+
+12.2.5. Convert the console application in a simple web application
+
+12.2.6. In Application class, remove System.out.println("Hello World!") of main method
+
+12.2.7. Open POM.XML and comment the dependency spring-boot-starter
+
+12.2.8. With POM.XML opened, uncomment the dependency spring-boot-starter-web
+
+12.2.9. Modify Application class to create a microservice using @RestController annotation and create two methods (hello and helloUser)
+
+      @SpringBootApplication
+      @RestController
+      public class Application {
+
+      	public static void main(String[] args) {
+      		SpringApplication.run(Application.class, args);
+      	}
+
+      	@RequestMapping("/")
+      	public String hello() {
+      		return "Java says: Hello World!";
+      	}
+
+      	@RequestMapping("/{user}")
+      	public String helloUser(@PathVariable String user) {
+      		return "Java says: Hello " + user + "!";
+      	}
+      }
+
+12.2.10. Run and show the results in Chrome
+
+    http://localhost:8080/
+    http://localhost:8080/SAP
+
+
+12.2.11. Delete the application Into Eclipse, clean the workspace and delete zip file in downloads folder
+
+
+:: END DEMO SCRIPT - LUNCH TALK SPRING BOOT ::

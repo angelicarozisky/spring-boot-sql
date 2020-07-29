@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+<title>Participants CRUD</title>
+
+<link href="/css/participants.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="page-header">
+			<h1>
+				Welcome <span sec:authentication="name"></span> to the Participants CRUD!
+			</h1>
+		</div>
+		<p>This is a simple application (CRUD) to control the Lunch Talk's Participants.</p>
+	</div>
+</body>
+</html>

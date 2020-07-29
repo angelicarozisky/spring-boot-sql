@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: participants-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: participants
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - participants-gateway
+  http:
+  - match:
+    - uri:
+        exact: /login
+    - uri:
+        exact: /participants
+    - uri:
+        exact: /participants/list
+    - uri:
+        exact: /participants/new
+    - uri:
+        exact: /participants/edit
+    - uri:
+        exact: /participants/delete
+    - uri:
+        exact: /participants/insert
+    - uri:
+        exact: /participants/update
+    route:
+    - destination:
+        host: participants
+        port:
+          number: 8000

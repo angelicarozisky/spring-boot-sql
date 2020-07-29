@@ -1,0 +1,38 @@
+#REVIEW 11.09.2018
+
+	1. Start with SPRING INITIALIZR
+	2. Start with Rest examples - Java web application
+	3. Create a CRUD example (as playlist application)-using thymeleaf and bootstrap
+	4. Firstly, show the web application without jackson dependency (ugly format), after add the jackson dependency
+	5. If I have time change from H2 to MySQL database / MySQL to MongoDB
+	6. If I have time show how create groovy scripts
+	
+	dependency, localhost
+
+#REVIEW 25.09.2018
+
+    01. Show the presentation (introduction about Spring Ecosystem and Spring Boot)
+    02. SPRING INITIALIZR (Security, Actuator, Web, JPA, Etc) -> .zip file -> Eclipse Import
+    03. Put all files into demo project (more dependencies (jetty,bootstrap,jackson,etc), application.properties, application.yml)
+    04. The first version POM.XML with commented dependencies (MySQL, undertow and MongoDB)
+    05. Show and comment about all files (JPA, RestController, @Autowired, etc)
+    06. To H2 and MySQL databases set show_sql: true to show the SQL command in console
+    
+      jpa:
+	    properties:
+	      hibernate:
+	        show_sql: true
+    
+    07. Run CRUD demo
+    08. Comment about metrics (Actuator) and Security, show CRUD operations, show SQL log in console
+    09. Stop the application
+    10. Change the database connection to MySQL database and run the CRUD demo again, show the data in MySQLWorkbench
+    11. Stop the application
+    12. Change the database connection to MongoDB database uncommented all necessary to use MongoDB in CRUD application
+    13. Show Local and Cloud connection, show MongoDB commands in console, show MongoDB atlas, show MongoDB compass community
+    14. Q&A
+
+#REVIEW DD.MM.YYYY
+
+
+ 

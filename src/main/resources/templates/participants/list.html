@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Participants CRUD</title>
+<!-- CSS INCLUDE -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- EOF CSS INCLUDE -->
+<style>
+.pagination-centered {
+	text-align: center;
+}
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.pointer-disabled {
+	pointer-events: none;
+}
+</style>
+
+</head>
+<body>
+	<script>
+		function deleteParticipant(id, name) {
+			document.getElementById('pId').value = id;
+			document.getElementById('pName').innerHTML = "This action will remove the Participant : "
+					+ name;
+			$("#deleteModal").modal();
+		}
+	</script>
+
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h3>
+				<b>Lunch Talk Participants</b>
+			</h3>
+			<h5>This is a simple application (CRUD) to control the Lunch Talk's Participants.</h5>
+		</div>
+	</div>
+
+	<div class="container">
+		<!-- Modal -->
+		<div class="modal fade" id="deleteModal" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Remove a Participant</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="campo" id="pId" />
+						<h5 id="pName">[participant name]</h5>
+						<br />
+						<p>Are you sure?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							onclick="location.href='/participants/delete/' + pId.value;">Yes</button>
+						<button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<p class="lead">
+			<a class="btn btn-primary" th:href="@{/participants/new}"> New
+				Participant</a>
+		</p>
+
+		<div th:if="${participantList != null}">
+			<div th:if="${message != null}">
+				<div class="alert alert-info" role="alert">
+					<span th:text="${message == null ? '&nbsp;' : message}">message</span>
+				</div>
+			</div>
+
+			<!-- END PAGE TITLE -->
+			<div class="row">
+				<table class="table datatable">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="participantList : ${participantList}">
+							<td th:text="${participantList.id}">id</td>
+							<td th:text="${participantList.name}">name</td>
+							<td>
+							    <a class="btn btn-sm btn-info"
+								th:href="@{/participants/edit/{id}(id=${participantList.id})}">Edit</a>
+								
+								<a class="btn btn-sm btn-danger"
+								th:onclick="'javascript:deleteParticipant(\'' + ${participantList.id} + '\',\''+ ${participantList.name} + '\');'">Delete</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row">
+					<div class="form-group col-md-1">
+						<select class="form-control pagination" id="pageSizeSelect">
+							<option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+								th:value="${pageSize}"
+								th:selected="${pageSize} == ${selectedPageSize}"></option>
+						</select>
+					</div>
+
+					<div th:if="${participantList.totalPages != 1}"
+						class="form-group col-md-11 pagination-centered">
+						<ul class="pagination">
+							<li th:class="${participantList.number == 0} ? disabled"><a
+								class="pageLink"
+								th:href="@{/participants/list/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+							</li>
+							<li th:class="${participantList.number == 0} ? disabled"><a
+								class="pageLink"
+								th:href="@{/participants/list/(pageSize=${selectedPageSize}, page=${participantList.number})}">&larr;</a>
+							</li>
+							<li
+								th:class="${participantList.number == (page - 1)} ? 'active pointer-disabled'"
+								th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+								<a class="pageLink"
+								th:href="@{/participants/list/(pageSize=${selectedPageSize}, page=${page})}"
+								th:text="${page}"></a>
+							</li>
+							<li
+								th:class="${participantList.number + 1 == participantList.totalPages} ? disabled">
+								<a class="pageLink"
+								th:href="@{/participants/list/(pageSize=${selectedPageSize}, page=${participantList.number + 2})}">&rarr;</a>
+							</li>
+							<li
+								th:class="${participantList.number + 1 == participantList.totalPages} ? disabled">
+								<a class="pageLink"
+								th:href="@{/participants/list/(pageSize=${selectedPageSize}, page=${participantList.totalPages})}">&raquo;</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${#lists.isEmpty(participantList)}">
+			<div class="alert alert-info" role="alert">
+				<span class="glyphicon glyphicon-exclamation-sign"></span> 0
+				participants were created!
+			</div>
+		</div>
+
+		<footer class="footer">
+			<p>&copy; 2018 SAP Hybris - Software Academy</p>
+		</footer>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(document).ready(function() {
+			changePageAndSize();
+		});
+
+		function changePageAndSize() {
+			$('#pageSizeSelect').change(
+					function(evt) {
+						window.location
+								.replace("/participants/list/?pageSize="
+										+ this.value + "&page=1");
+					});
+		}
+		/*]]>*/
+	</script>
+</body>
+</html>
