@@ -42,7 +42,7 @@ public class ParticipantMvcController {
 
 	//MongoDB version
 	//Only used by MongoDB. Is not mandatory, only generate a sequence ID.
-	//@Autowired
+	// @Autowired
 	//private SequenceRestController sequenceController;
 
     @GetMapping("/")

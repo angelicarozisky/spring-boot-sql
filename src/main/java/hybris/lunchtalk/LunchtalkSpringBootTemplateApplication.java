@@ -26,8 +26,8 @@ public class LunchtalkSpringBootTemplateApplication{
 
 	// MongoDB version
 	// Only used by MongoDB. Is not mandatory, only generate a sequence ID.
-	//@Autowired
-	//private SequenceRestController sequenceController;
+	// @Autowired
+	// private SequenceRestController sequenceController;
 
 	public static void main(String[] args) {
 
