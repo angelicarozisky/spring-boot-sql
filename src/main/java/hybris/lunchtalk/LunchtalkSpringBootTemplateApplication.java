@@ -18,6 +18,7 @@ import hybris.lunchtalk.model.Participant;
 public class LunchtalkSpringBootTemplateApplication{
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(LunchtalkSpringBootTemplateApplication.class, args);
 	}
 
