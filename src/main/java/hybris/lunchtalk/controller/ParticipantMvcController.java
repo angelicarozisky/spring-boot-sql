@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,11 +38,6 @@ public class ParticipantMvcController {
 	
 	@Autowired
 	private IParticipantRepository participantRepository;
-
-	//MongoDB version
-	//Only used by MongoDB. Is not mandatory, only generate a sequence ID.
-	// @Autowired
-	//private SequenceRestController sequenceController;
 
     @GetMapping("/")
     public String home() {
@@ -70,22 +64,28 @@ public class ParticipantMvcController {
 			@RequestParam("page") Optional<Integer> page) {
 
 		ModelAndView modelAndView = new ModelAndView("participants/list");
-		//
+		
 		// Evaluate page size. If requested parameter is null, return initial
 		// page size
 		int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+		
 		// Evaluate page. If requested parameter is null or less than 0 (to
 		// prevent exception), return initial size. Otherwise, return value of
 		// param. decreased by 1.
 		int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
 		Page<Participant> participantList = participantRepository.findAll(new PageRequest(evalPage, evalPageSize));
 		Pagination pager = new Pagination(participantList.getTotalPages(), participantList.getNumber(), BUTTONS_TO_SHOW);
+
 		// add participant
 		modelAndView.addObject("participantList", participantList);
+		
 		// evaluate page size
 		modelAndView.addObject("selectedPageSize", evalPageSize);
+		
 		// add page sizes
 		modelAndView.addObject("pageSizes", PAGE_SIZES);
+		
 		// add pager
 		modelAndView.addObject("pager", pager);
 
@@ -97,27 +97,20 @@ public class ParticipantMvcController {
 		return "participants/new";
 	}
 
-	// if MongoDB use String id
-	// if SQL database use long id
 	@RequestMapping("/participants/edit/{id}")
 	public String editParticipant(@PathVariable("id") long id, ModelMap model ) {
-		//Participant participant = this.participantRepository.findOne(id);
 		Participant participant = this.participantRepository.findById(id).get();
 		model.addAttribute("participant", participant);
 	    
 		return "participants/edit";
 	}	
 	
-	// if MongoDB use String id
-	// if SQL database use long id
 	@GetMapping("/participants/delete/{id}")
 	public String deleteParticipant(@PathVariable("id") long id, RedirectAttributes attr) {
-		//Participant participant = this.participantRepository.findOne(id);
 		Participant participant = this.participantRepository.findById(id).get();
 
 		this.participantRepository.deleteById(id);
 
-		//this.participantRepository.delete(id);
 		attr.addFlashAttribute("message", "Participant '" + participant.getName() + "' removed.");
 		return "redirect:/participants/list";
 	}
@@ -129,9 +122,6 @@ public class ParticipantMvcController {
 			return "/participants/new";
 		}
 
-		// MongoDB version
-		// Only used by MongoDB. Is not mandatory, only generate a sequence ID.
-		//participant.setId(String.valueOf(sequenceController.getNextSequenceId("participant")));
 		this.participantRepository.save(participant);
 		
 		attr.addFlashAttribute("message", "Participant '" + participant.getName() + "' added.");

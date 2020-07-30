@@ -1,6 +1,5 @@
 package hybris.lunchtalk.model;
 
-//SQL version
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,32 +50,3 @@ public class Participant {
 
 	}
 }
-
-//MongoDB version
-/*
- * import org.springframework.data.annotation.Id; import
- * org.springframework.data.mongodb.core.mapping.Document;
- * 
- * @Document(collection = "participant") public class Participant {
- * 
- * @Id private String id;
- * 
- * private String name;
- * 
- * public String getId() { return id; }
- * 
- * public void setId(String id) { this.id = id; }
- * 
- * public String getName() { return name; }
- * 
- * public void setName(String name) { this.name = name; }
- * 
- * @Override public String toString() { return String.format(
- * "Participant[id=%s, name='%s']", id, name); }
- * 
- * public Participant(String name) { this.name = name; }
- * 
- * public Participant() {
- * 
- * } }
- */
