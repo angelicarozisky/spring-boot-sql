@@ -31,12 +31,6 @@ public class LunchtalkSpringBootTemplateApplication{
 
 	public static void main(String[] args) {
 
-		String password = "admin123";
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String hashedPassword = passwordEncoder.encode(password);
-
-		System.out.println("password -> " + hashedPassword);
-	    
 		SpringApplication.run(LunchtalkSpringBootTemplateApplication.class, args);
 	}
 

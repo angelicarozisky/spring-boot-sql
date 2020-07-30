@@ -57,13 +57,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe();
     }
 
+    // To create a new encrypted password
+    // String password = "admin123";
+	// BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	// String hashedPassword = passwordEncoder.encode(password);
+
+	// System.out.println("password -> " + hashedPassword);
+    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder
                 .inMemoryAuthentication()
                 .withUser("marcelo").password("$2a$10$mLOJomifTnG4JwUmF43I6uHWvymu.roJvM75ImRKCUAnWYbAPeRWW").roles("USER", "ADMIN")
                 .and()
-                .withUser("ken").password("$2a$10$thB9l/Qw.IsYalfdxmkdPOvmCk89U4diWummB5YCAjCQQYqTCXhTm").roles("USER");
+                .withUser("angelica").password("$2a$10$mLOJomifTnG4JwUmF43I6uHWvymu.roJvM75ImRKCUAnWYbAPeRWW").roles("USER");
     }
 
     @Bean
